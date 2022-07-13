@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using MilitaryFinder.API.Data;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,35 @@ namespace MilitaryFinder.API
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<Data.DbContext>();
             services.AddControllersWithViews();
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Military Finder API",
+                    Description = "Simple RESTful API project",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Bohdan Marko",
+                        Email = "markopollo789@gmail.com",
+                        Url = new Uri("https://github.com/macdan789"),
+                    }
+                });
+                config.SwaggerDoc("test", new OpenApiInfo
+                {
+                    Version = "test",
+                    Title = "test title",
+                    Description = "test description",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Bohdan Marko",
+                        Email = "markopollo789@gmail.com",
+                        Url = new Uri("https://github.com/macdan789"),
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +73,18 @@ namespace MilitaryFinder.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(config =>
+                {
+                    config.RoutePrefix = string.Empty;
+                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "Military Finder v1");
+                    config.SwaggerEndpoint("/swagger/test/swagger.json", "test");
+                });
             }
 
             app.UseHttpsRedirection();
