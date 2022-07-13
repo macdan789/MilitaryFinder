@@ -73,24 +73,26 @@ namespace MilitaryFinder.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                // Enable middleware to serve generated Swagger as a JSON endpoint.
-                app.UseSwagger();
-
-                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
-                // specifying the Swagger JSON endpoint.
-                app.UseSwaggerUI(config =>
-                {
-                    config.RoutePrefix = string.Empty;
-                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "Military Finder v1");
-                    config.SwaggerEndpoint("/swagger/test/swagger.json", "test");
-                });
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(config =>
+            {
+                config.RoutePrefix = string.Empty;
+                config.SwaggerEndpoint("/swagger/v1/swagger.json", "Military Finder v1");
+                config.SwaggerEndpoint("/swagger/test/swagger.json", "test");
+            });
+
 
             app.UseEndpoints(endpoints =>
             {
