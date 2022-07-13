@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MilitaryFinder.API.Contracts.V1;
 using MilitaryFinder.API.Domain;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace MilitaryFinder.API.Controllers.V1
             }
         }
 
-        [HttpGet("api/v1/aircrafts")]
+        [HttpGet(ApiRoutes.FighterAircraft.GetAll)]
         public IActionResult GetAll()
         {
             return Ok(_aircrafts);
