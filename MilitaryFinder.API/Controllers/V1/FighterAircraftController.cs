@@ -3,43 +3,55 @@ using MilitaryFinder.API.Contracts.V1;
 using MilitaryFinder.API.Contracts.V1.Requests;
 using MilitaryFinder.API.Contracts.V1.Responses;
 using MilitaryFinder.API.Domain;
+using MilitaryFinder.API.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MilitaryFinder.API.Controllers.V1
 {
     public class FighterAircraftController : Controller
     {
-        private List<FighterAircraft> _aircrafts;
+        private readonly IFighterAircraftService _service;
 
-        public FighterAircraftController()
+        public FighterAircraftController(IFighterAircraftService service)
         {
-            _aircrafts = new List<FighterAircraft>();
-            for (int i = 0; i < 5; i++)
-            {
-                _aircrafts.Add(new FighterAircraft { Id = Guid.NewGuid().ToString() });
-            }
+            _service = service;
         }
 
 
         [HttpGet(ApiRoutes.FighterAircraft.GetAll)]
         public IActionResult GetAll()
         {
-            return Ok(_aircrafts);
+            var aircrafts = _service.GetAllAircrafts();
+
+            return Ok(aircrafts);
+        }
+
+
+        [HttpGet(ApiRoutes.FighterAircraft.Get)]
+        public IActionResult Get([FromRoute] string aircraftId)
+        {
+            var aircraft = _service.GetAircraft(aircraftId);
+
+            if (aircraft == null)
+                return NotFound();
+
+            return Ok(aircraft);
         }
 
 
         [HttpPost(ApiRoutes.FighterAircraft.Create)]
         public IActionResult Create([FromBody] FighterAircraftRequest request)
         {
-            var fighterAircraft = new FighterAircraft { Id = request.Id };
+            var aircraft = new FighterAircraft { Id = request.Id, Model = request.Model };
 
-            _aircrafts.Add(fighterAircraft);
+            _service.CreateAircraft(aircraft);
 
             var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-            var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", fighterAircraft.Id);
+            var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", aircraft.Id);
             
-            var response = new FighterAircraftResponse { Id = fighterAircraft.Id };
+            var response = new FighterAircraftResponse { Id = aircraft.Id, Model = aircraft.Model };
 
             return Created(location, response);
         }

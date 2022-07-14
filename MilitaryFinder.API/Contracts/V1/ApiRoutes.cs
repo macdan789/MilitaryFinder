@@ -10,7 +10,7 @@
         public static class FighterAircraft
         {
             public const string GetAll = Base + "/aircrafts";
-            public const string Get    = Base + "/aircrafts/{id}";
+            public const string Get    = Base + "/aircrafts/{aircraftId}";
             public const string Create = Base + "/aircrafts";
         }
     }

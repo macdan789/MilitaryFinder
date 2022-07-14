@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using MilitaryFinder.API.Registers.Abstract;
+using MilitaryFinder.API.Services;
 using System;
 
 namespace MilitaryFinder.API.Registers
@@ -38,6 +39,8 @@ namespace MilitaryFinder.API.Registers
                     }
                 });
             });
+
+            services.AddSingleton<IFighterAircraftService, FighterAircraftService>();
         }
     }
 }

@@ -3,5 +3,6 @@
     public class FighterAircraftResponse
     {
         public string Id { get; set; }
+        public string Model { get; set; }
     }
 }
