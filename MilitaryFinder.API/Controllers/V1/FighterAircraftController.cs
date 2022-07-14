@@ -44,14 +44,12 @@ namespace MilitaryFinder.API.Controllers.V1
         [HttpPost(ApiRoutes.FighterAircraft.Create)]
         public IActionResult Create([FromBody] FighterAircraftRequest request)
         {
-            var aircraft = new FighterAircraft { Id = request.Id, Model = request.Model };
-
-            _service.CreateAircraft(aircraft);
+            _service.CreateAircraft(request);
 
             var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-            var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", aircraft.Id);
+            var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", request.Id);
             
-            var response = new FighterAircraftResponse { Id = aircraft.Id, Model = aircraft.Model };
+            var response = new FighterAircraftResponse { Id = request.Id, Model = request.Model };
 
             return Created(location, response);
         }

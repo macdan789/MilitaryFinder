@@ -1,4 +1,6 @@
-﻿using MilitaryFinder.API.Domain;
+﻿using MilitaryFinder.API.Contracts.V1.Requests;
+using MilitaryFinder.API.Contracts.V1.Responses;
+using MilitaryFinder.API.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,19 +22,49 @@ namespace MilitaryFinder.API.Services
                 });
         }
 
-        public void CreateAircraft(FighterAircraft aircraft)
+        public void CreateAircraft(FighterAircraftRequest aircraft)
         {
-            _aircrafts.Add(aircraft);
+            var domainAircraft = new FighterAircraft
+            {
+                Id = aircraft.Id,
+                Model = aircraft.Model
+            };
+
+            _aircrafts.Add(domainAircraft);
         }
 
-        public FighterAircraft GetAircraft(string aircraftId)
+        public FighterAircraftResponse GetAircraft(string aircraftId)
         {
-            return _aircrafts.SingleOrDefault(x => x.Id == aircraftId);
+            var domainAircraft = _aircrafts.SingleOrDefault(x => x.Id == aircraftId);
+
+            if(domainAircraft is not null)
+            {
+                var response = new FighterAircraftResponse
+                {
+                    Id = domainAircraft.Id,
+                    Model = domainAircraft.Model
+                };
+
+                return response;
+            }
+
+            return null;
         }
 
-        public List<FighterAircraft> GetAllAircrafts()
+        public List<FighterAircraftResponse> GetAllAircrafts()
         {
-            return _aircrafts;
+            var response = new List<FighterAircraftResponse>();
+
+            foreach (var aircraft in _aircrafts)
+            {
+                response.Add(new FighterAircraftResponse
+                {
+                    Id = aircraft.Id,
+                    Model = aircraft.Model
+                });
+            }
+
+            return response;
         }
     }
 }
