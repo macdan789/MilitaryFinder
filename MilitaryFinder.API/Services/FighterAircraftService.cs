@@ -66,5 +66,18 @@ namespace MilitaryFinder.API.Services
 
             return response;
         }
+
+        public bool UpdateAircraft(string aircraftId, UpdateFighterAircraft aircraft)
+        {
+            var domainAircraftIndex = _aircrafts.FindIndex(x => x.Id == aircraftId);
+
+            if(domainAircraftIndex >= 0)
+            {
+                _aircrafts[domainAircraftIndex].Model = aircraft.Model;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

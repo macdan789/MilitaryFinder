@@ -10,5 +10,6 @@ namespace MilitaryFinder.API.Services
         FighterAircraftResponse GetAircraft(string aircraftId);
         List<FighterAircraftResponse> GetAllAircrafts();
         void CreateAircraft(FighterAircraftRequest aircraft);
+        bool UpdateAircraft(string aircraftId, UpdateFighterAircraft aircraft);
     }
 }
