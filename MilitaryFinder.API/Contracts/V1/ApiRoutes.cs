@@ -13,6 +13,7 @@
             public const string Get    = Base + "/aircrafts/{aircraftId}";
             public const string Create = Base + "/aircrafts";
             public const string Update = Base + "/aircrafts/{aircraftId}";
+            public const string Delete = Base + "/aircrafts/{aircraftId}";
         }
     }
 }

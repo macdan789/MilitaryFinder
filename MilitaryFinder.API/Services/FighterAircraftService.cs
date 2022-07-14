@@ -33,6 +33,20 @@ namespace MilitaryFinder.API.Services
             _aircrafts.Add(domainAircraft);
         }
 
+        public bool DeleteAircraft(string aircraftId)
+        {
+            var aircraftIndex = _aircrafts.FindIndex(x => x.Id == aircraftId);
+
+            if(aircraftIndex >= 0)
+            {
+                _aircrafts.RemoveAt(aircraftIndex);
+
+                return true;
+            }
+
+            return false;
+        }
+
         public FighterAircraftResponse GetAircraft(string aircraftId)
         {
             var domainAircraft = _aircrafts.SingleOrDefault(x => x.Id == aircraftId);
@@ -69,11 +83,11 @@ namespace MilitaryFinder.API.Services
 
         public bool UpdateAircraft(string aircraftId, UpdateFighterAircraft aircraft)
         {
-            var domainAircraftIndex = _aircrafts.FindIndex(x => x.Id == aircraftId);
+            var aircraftIndex = _aircrafts.FindIndex(x => x.Id == aircraftId);
 
-            if(domainAircraftIndex >= 0)
+            if(aircraftIndex >= 0)
             {
-                _aircrafts[domainAircraftIndex].Model = aircraft.Model;
+                _aircrafts[aircraftIndex].Model = aircraft.Model;
                 return true;
             }
 

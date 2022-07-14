@@ -62,5 +62,14 @@ namespace MilitaryFinder.API.Controllers.V1
 
             return isUpdated ? Ok() : NotFound();
         }
+
+
+        [HttpDelete(ApiRoutes.FighterAircraft.Delete)]
+        public IActionResult Delete([FromRoute] string aircraftId)
+        {
+            var isDeleted = _service.DeleteAircraft(aircraftId);
+
+            return isDeleted ? Ok() : NotFound();
+        }
     }
 }
