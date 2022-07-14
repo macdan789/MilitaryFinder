@@ -15,14 +15,29 @@ namespace MilitaryFinder.API.Controllers.V1
             _aircrafts = new List<FighterAircraft>();
             for (int i = 0; i < 5; i++)
             {
-                _aircrafts.Add(new FighterAircraft { Id = Guid.NewGuid() });
+                _aircrafts.Add(new FighterAircraft { Id = Guid.NewGuid().ToString() });
             }
         }
+
 
         [HttpGet(ApiRoutes.FighterAircraft.GetAll)]
         public IActionResult GetAll()
         {
             return Ok(_aircrafts);
         }
+
+
+        [HttpPost(ApiRoutes.FighterAircraft.Create)]
+        public IActionResult Create([FromBody] FighterAircraft fighterAircraft)
+        {
+            if (string.IsNullOrEmpty(fighterAircraft.Id))
+                fighterAircraft.Id = Guid.NewGuid().ToString();
+
+            var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", fighterAircraft.Id);
+            
+            return Created(location, fighterAircraft);
+        }
+
     }
 }
