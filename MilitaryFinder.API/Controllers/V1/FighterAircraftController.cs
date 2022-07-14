@@ -58,9 +58,15 @@ namespace MilitaryFinder.API.Controllers.V1
         [HttpPut(ApiRoutes.FighterAircraft.Update)]
         public IActionResult Update([FromRoute] string aircraftId, [FromBody] UpdateFighterAircraft aircraft)
         {
+            var response = new FighterAircraftResponse
+            {
+                Id = aircraftId,
+                Model = aircraft.Model
+            };
+
             var isUpdated = _service.UpdateAircraft(aircraftId, aircraft);
 
-            return isUpdated ? Ok() : NotFound();
+            return isUpdated ? NoContent() : NotFound();
         }
 
 
@@ -69,7 +75,7 @@ namespace MilitaryFinder.API.Controllers.V1
         {
             var isDeleted = _service.DeleteAircraft(aircraftId);
 
-            return isDeleted ? Ok() : NotFound();
+            return isDeleted ? NoContent() : NotFound();
         }
     }
 }
