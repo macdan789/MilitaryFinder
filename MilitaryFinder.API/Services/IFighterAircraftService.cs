@@ -10,7 +10,7 @@ namespace MilitaryFinder.API.Services
     {
         Task<FighterAircraftResponse> GetAircraftAsync(string aircraftId);
         Task<List<FighterAircraftResponse>> GetAllAircraftsAsync();
-        Task<bool> CreateAircraftAsync(FighterAircraftRequest aircraft);
+        Task<bool> CreateAircraftAsync(FighterAircraft aircraft);
         Task<bool> UpdateAircraftAsync(string aircraftId, UpdateFighterAircraft aircraft);
         Task<bool> DeleteAircraftAsync(string aircraftId);
     }

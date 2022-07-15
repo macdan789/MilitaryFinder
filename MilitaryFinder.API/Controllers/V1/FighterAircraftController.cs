@@ -45,16 +45,16 @@ namespace MilitaryFinder.API.Controllers.V1
         [HttpPost(ApiRoutes.FighterAircraft.Create)]
         public async Task<IActionResult> Create([FromBody] FighterAircraftRequest request)
         {
-            var created = await _service.CreateAircraftAsync(request);
+            var domainAircraft = new FighterAircraft { Model = request.Model };
+
+            var created = await _service.CreateAircraftAsync(domainAircraft);
 
             if (created)
             {
                 var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-                var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", request.Id);
+                var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", domainAircraft.Id);
 
-                var response = new FighterAircraftResponse { Id = request.Id, Model = request.Model };
-
-                return Created(location, response);
+                return Created(location, domainAircraft);
             }
 
             return BadRequest();

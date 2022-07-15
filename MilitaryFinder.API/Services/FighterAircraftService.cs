@@ -18,11 +18,9 @@ namespace MilitaryFinder.API.Services
             _dbContext = dbContext;
         }
 
-        public async Task<bool> CreateAircraftAsync(FighterAircraftRequest aircraft)
+        public async Task<bool> CreateAircraftAsync(FighterAircraft aircraft)
         {
-            var domainAircraft = new FighterAircraft { Id = aircraft.Id, Model = aircraft.Model };
-
-            await _dbContext.FighterAircraft.AddAsync(domainAircraft);
+            await _dbContext.FighterAircraft.AddAsync(aircraft);
             var created = await _dbContext.SaveChangesAsync();
 
             return created > 0;
