@@ -31,7 +31,7 @@ namespace MilitaryFinder.API.Controllers.V1
 
 
         [HttpGet(ApiRoutes.FighterAircraft.Get)]
-        public async Task<IActionResult> Get([FromRoute] string aircraftId)
+        public async Task<IActionResult> Get([FromRoute] Guid aircraftId)
         {
             var aircraft = await _service.GetAircraftAsync(aircraftId);
 
@@ -52,7 +52,7 @@ namespace MilitaryFinder.API.Controllers.V1
             if (created)
             {
                 var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-                var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", domainAircraft.Id);
+                var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", domainAircraft.Id.ToString());
 
                 return Created(location, domainAircraft);
             }
@@ -62,7 +62,7 @@ namespace MilitaryFinder.API.Controllers.V1
 
 
         [HttpPut(ApiRoutes.FighterAircraft.Update)]
-        public async Task<IActionResult> Update([FromRoute] string aircraftId, [FromBody] UpdateFighterAircraft aircraft)
+        public async Task<IActionResult> Update([FromRoute] Guid aircraftId, [FromBody] UpdateFighterAircraft aircraft)
         {
             var isUpdated = await _service.UpdateAircraftAsync(aircraftId, aircraft);
 
@@ -71,7 +71,7 @@ namespace MilitaryFinder.API.Controllers.V1
 
 
         [HttpDelete(ApiRoutes.FighterAircraft.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] string aircraftId)
+        public async Task<IActionResult> Delete([FromRoute] Guid aircraftId)
         {
             var isDeleted = await _service.DeleteAircraftAsync(aircraftId);
 

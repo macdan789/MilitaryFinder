@@ -3,6 +3,7 @@ using MilitaryFinder.API.Contracts.V1.Requests;
 using MilitaryFinder.API.Contracts.V1.Responses;
 using MilitaryFinder.API.Data;
 using MilitaryFinder.API.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace MilitaryFinder.API.Services
             return created > 0;
         }
 
-        public async Task<bool> DeleteAircraftAsync(string aircraftId)
+        public async Task<bool> DeleteAircraftAsync(Guid aircraftId)
         {
             var domainAircraft = await _dbContext.FighterAircraft.SingleOrDefaultAsync(x => x.Id == aircraftId);
 
@@ -36,7 +37,7 @@ namespace MilitaryFinder.API.Services
             return deleted > 0;
         }
 
-        public async Task<FighterAircraftResponse> GetAircraftAsync(string aircraftId)
+        public async Task<FighterAircraftResponse> GetAircraftAsync(Guid aircraftId)
         {
             var domainAircraft = await _dbContext.FighterAircraft.SingleOrDefaultAsync(x => x.Id == aircraftId);
 
@@ -64,7 +65,7 @@ namespace MilitaryFinder.API.Services
             return response;
         }
 
-        public async Task<bool> UpdateAircraftAsync(string aircraftId, UpdateFighterAircraft aircraft)
+        public async Task<bool> UpdateAircraftAsync(Guid aircraftId, UpdateFighterAircraft aircraft)
         {
             var domainAircraft = new FighterAircraft { Id = aircraftId, Model = aircraft.Model };
 
