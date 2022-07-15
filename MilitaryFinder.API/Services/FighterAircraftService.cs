@@ -31,10 +31,15 @@ namespace MilitaryFinder.API.Services
         {
             var domainAircraft = await _dbContext.FighterAircraft.SingleOrDefaultAsync(x => x.Id == aircraftId);
 
-            _dbContext.FighterAircraft.Remove(domainAircraft);
-            var deleted = await _dbContext.SaveChangesAsync();
+            if (domainAircraft is not null)
+            {
+                _dbContext.FighterAircraft.Remove(domainAircraft);
+                var deleted = await _dbContext.SaveChangesAsync();
 
-            return deleted > 0;
+                return deleted > 0;
+            }
+
+            return false;
         }
 
         public async Task<FighterAircraftResponse> GetAircraftAsync(Guid aircraftId)

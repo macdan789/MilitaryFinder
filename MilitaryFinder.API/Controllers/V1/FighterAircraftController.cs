@@ -52,7 +52,7 @@ namespace MilitaryFinder.API.Controllers.V1
             if (created)
             {
                 var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-                var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", domainAircraft.Id.ToString());
+                var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{aircraftId}", domainAircraft.Id.ToString());
 
                 return Created(location, domainAircraft);
             }
