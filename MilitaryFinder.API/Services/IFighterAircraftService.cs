@@ -2,15 +2,16 @@
 using MilitaryFinder.API.Contracts.V1.Responses;
 using MilitaryFinder.API.Domain;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MilitaryFinder.API.Services
 {
     public interface IFighterAircraftService
     {
-        FighterAircraftResponse GetAircraft(string aircraftId);
-        List<FighterAircraftResponse> GetAllAircrafts();
-        void CreateAircraft(FighterAircraftRequest aircraft);
-        bool UpdateAircraft(string aircraftId, UpdateFighterAircraft aircraft);
-        bool DeleteAircraft(string aircraftId);
+        Task<FighterAircraftResponse> GetAircraftAsync(string aircraftId);
+        Task<List<FighterAircraftResponse>> GetAllAircraftsAsync();
+        Task<bool> CreateAircraftAsync(FighterAircraftRequest aircraft);
+        Task<bool> UpdateAircraftAsync(string aircraftId, UpdateFighterAircraft aircraft);
+        Task<bool> DeleteAircraftAsync(string aircraftId);
     }
 }

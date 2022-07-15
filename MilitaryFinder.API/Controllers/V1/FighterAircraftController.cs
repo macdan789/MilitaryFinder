@@ -7,6 +7,7 @@ using MilitaryFinder.API.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MilitaryFinder.API.Controllers.V1
 {
@@ -21,18 +22,18 @@ namespace MilitaryFinder.API.Controllers.V1
 
 
         [HttpGet(ApiRoutes.FighterAircraft.GetAll)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var aircrafts = _service.GetAllAircrafts();
+            var aircrafts = await _service.GetAllAircraftsAsync();
 
             return Ok(aircrafts);
         }
 
 
         [HttpGet(ApiRoutes.FighterAircraft.Get)]
-        public IActionResult Get([FromRoute] string aircraftId)
+        public async Task<IActionResult> Get([FromRoute] string aircraftId)
         {
-            var aircraft = _service.GetAircraft(aircraftId);
+            var aircraft = await _service.GetAircraftAsync(aircraftId);
 
             if (aircraft == null)
                 return NotFound();
@@ -42,38 +43,37 @@ namespace MilitaryFinder.API.Controllers.V1
 
 
         [HttpPost(ApiRoutes.FighterAircraft.Create)]
-        public IActionResult Create([FromBody] FighterAircraftRequest request)
+        public async Task<IActionResult> Create([FromBody] FighterAircraftRequest request)
         {
-            _service.CreateAircraft(request);
+            var created = await _service.CreateAircraftAsync(request);
 
-            var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-            var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", request.Id);
-            
-            var response = new FighterAircraftResponse { Id = request.Id, Model = request.Model };
+            if (created)
+            {
+                var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{id}", request.Id);
 
-            return Created(location, response);
+                var response = new FighterAircraftResponse { Id = request.Id, Model = request.Model };
+
+                return Created(location, response);
+            }
+
+            return BadRequest();
         }
 
 
         [HttpPut(ApiRoutes.FighterAircraft.Update)]
-        public IActionResult Update([FromRoute] string aircraftId, [FromBody] UpdateFighterAircraft aircraft)
+        public async Task<IActionResult> Update([FromRoute] string aircraftId, [FromBody] UpdateFighterAircraft aircraft)
         {
-            var response = new FighterAircraftResponse
-            {
-                Id = aircraftId,
-                Model = aircraft.Model
-            };
-
-            var isUpdated = _service.UpdateAircraft(aircraftId, aircraft);
+            var isUpdated = await _service.UpdateAircraftAsync(aircraftId, aircraft);
 
             return isUpdated ? NoContent() : NotFound();
         }
 
 
         [HttpDelete(ApiRoutes.FighterAircraft.Delete)]
-        public IActionResult Delete([FromRoute] string aircraftId)
+        public async Task<IActionResult> Delete([FromRoute] string aircraftId)
         {
-            var isDeleted = _service.DeleteAircraft(aircraftId);
+            var isDeleted = await _service.DeleteAircraftAsync(aircraftId);
 
             return isDeleted ? NoContent() : NotFound();
         }
