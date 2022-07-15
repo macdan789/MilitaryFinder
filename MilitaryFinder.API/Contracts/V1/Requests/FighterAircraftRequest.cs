@@ -2,7 +2,6 @@
 {
     public class FighterAircraftRequest
     {
-        public string Id { get; set; }
         public string Model { get; set; }
     }
 }

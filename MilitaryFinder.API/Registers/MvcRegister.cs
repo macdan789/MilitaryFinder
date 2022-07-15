@@ -40,7 +40,7 @@ namespace MilitaryFinder.API.Registers
                 });
             });
 
-            services.AddSingleton<IFighterAircraftService, FighterAircraftService>();
+            services.AddScoped<IFighterAircraftService, FighterAircraftService>();
         }
     }
 }

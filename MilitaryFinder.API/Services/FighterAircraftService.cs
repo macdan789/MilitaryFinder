@@ -1,63 +1,54 @@
-﻿using MilitaryFinder.API.Contracts.V1.Requests;
+﻿using Microsoft.EntityFrameworkCore;
+using MilitaryFinder.API.Contracts.V1.Requests;
 using MilitaryFinder.API.Contracts.V1.Responses;
+using MilitaryFinder.API.Data;
 using MilitaryFinder.API.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MilitaryFinder.API.Services
 {
     public class FighterAircraftService : IFighterAircraftService
     {
-        private readonly List<FighterAircraft> _aircrafts;
+        private readonly DataContext _dbContext;
 
-        public FighterAircraftService()
+        public FighterAircraftService(DataContext dbContext)
         {
-            _aircrafts = new List<FighterAircraft>();
-            for (var i = 0; i < 5; i++)
-                _aircrafts.Add(new FighterAircraft
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Model = $"Model {i}"
-                });
+            _dbContext = dbContext;
         }
 
-        public void CreateAircraft(FighterAircraftRequest aircraft)
+        public async Task<bool> CreateAircraftAsync(FighterAircraft aircraft)
         {
-            var domainAircraft = new FighterAircraft
-            {
-                Id = aircraft.Id,
-                Model = aircraft.Model
-            };
+            await _dbContext.FighterAircraft.AddAsync(aircraft);
+            var created = await _dbContext.SaveChangesAsync();
 
-            _aircrafts.Add(domainAircraft);
+            return created > 0;
         }
 
-        public bool DeleteAircraft(string aircraftId)
+        public async Task<bool> DeleteAircraftAsync(Guid aircraftId)
         {
-            var aircraftIndex = _aircrafts.FindIndex(x => x.Id == aircraftId);
+            var domainAircraft = await _dbContext.FighterAircraft.SingleOrDefaultAsync(x => x.Id == aircraftId);
 
-            if(aircraftIndex >= 0)
+            if (domainAircraft is not null)
             {
-                _aircrafts.RemoveAt(aircraftIndex);
+                _dbContext.FighterAircraft.Remove(domainAircraft);
+                var deleted = await _dbContext.SaveChangesAsync();
 
-                return true;
+                return deleted > 0;
             }
 
             return false;
         }
 
-        public FighterAircraftResponse GetAircraft(string aircraftId)
+        public async Task<FighterAircraftResponse> GetAircraftAsync(Guid aircraftId)
         {
-            var domainAircraft = _aircrafts.SingleOrDefault(x => x.Id == aircraftId);
+            var domainAircraft = await _dbContext.FighterAircraft.SingleOrDefaultAsync(x => x.Id == aircraftId);
 
             if(domainAircraft is not null)
             {
-                var response = new FighterAircraftResponse
-                {
-                    Id = domainAircraft.Id,
-                    Model = domainAircraft.Model
-                };
+                var response = new FighterAircraftResponse { Id = domainAircraft.Id, Model = domainAircraft.Model };
 
                 return response;
             }
@@ -65,33 +56,28 @@ namespace MilitaryFinder.API.Services
             return null;
         }
 
-        public List<FighterAircraftResponse> GetAllAircrafts()
+        public async Task<List<FighterAircraftResponse>> GetAllAircraftsAsync()
         {
             var response = new List<FighterAircraftResponse>();
 
-            foreach (var aircraft in _aircrafts)
+            var aircrafts = await _dbContext.FighterAircraft.ToListAsync();
+
+            foreach (var aircraft in aircrafts)
             {
-                response.Add(new FighterAircraftResponse
-                {
-                    Id = aircraft.Id,
-                    Model = aircraft.Model
-                });
+                response.Add(new FighterAircraftResponse { Id = aircraft.Id, Model = aircraft.Model });
             }
 
             return response;
         }
 
-        public bool UpdateAircraft(string aircraftId, UpdateFighterAircraft aircraft)
+        public async Task<bool> UpdateAircraftAsync(Guid aircraftId, UpdateFighterAircraft aircraft)
         {
-            var aircraftIndex = _aircrafts.FindIndex(x => x.Id == aircraftId);
+            var domainAircraft = new FighterAircraft { Id = aircraftId, Model = aircraft.Model };
 
-            if(aircraftIndex >= 0)
-            {
-                _aircrafts[aircraftIndex].Model = aircraft.Model;
-                return true;
-            }
-
-            return false;
+            _dbContext.FighterAircraft.Update(domainAircraft);
+            var updated = await _dbContext.SaveChangesAsync();
+            
+            return updated > 0;
         }
     }
 }

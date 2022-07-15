@@ -10,13 +10,11 @@ namespace MilitaryFinder.API.Registers
     {
         public void RegisterServices(IServiceCollection services, IConfiguration Configuration)
         {
-            services.AddDbContext<Data.DbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<Data.DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<Data.DbContext>();
+                .AddEntityFrameworkStores<Data.DataContext>();
             services.AddControllersWithViews();
         }
     }
