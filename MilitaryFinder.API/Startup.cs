@@ -40,6 +40,8 @@ namespace MilitaryFinder.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
