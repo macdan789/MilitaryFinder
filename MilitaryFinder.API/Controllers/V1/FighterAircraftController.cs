@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MilitaryFinder.API.Contracts.V1;
 using MilitaryFinder.API.Contracts.V1.Requests;
 using MilitaryFinder.API.Contracts.V1.Responses;
@@ -13,10 +14,12 @@ namespace MilitaryFinder.API.Controllers.V1
 {
     public class FighterAircraftController : Controller
     {
+        private readonly ILogger<FighterAircraftController> _logger;
         private readonly IFighterAircraftService _service;
 
-        public FighterAircraftController(IFighterAircraftService service)
+        public FighterAircraftController(ILogger<FighterAircraftController> logger, IFighterAircraftService service)
         {
+            _logger = logger;
             _service = service;
         }
 
@@ -25,6 +28,8 @@ namespace MilitaryFinder.API.Controllers.V1
         public async Task<IActionResult> GetAll()
         {
             var aircrafts = await _service.GetAllAircraftsAsync();
+
+            _logger.LogInformation($"[Request: GET {ApiRoutes.FighterAircraft.GetAll}] [Status: 200] [Count of items: {aircrafts.Count}]");
 
             return Ok(aircrafts);
         }
@@ -35,10 +40,7 @@ namespace MilitaryFinder.API.Controllers.V1
         {
             var aircraft = await _service.GetAircraftAsync(aircraftId);
 
-            if (aircraft == null)
-                return NotFound();
-
-            return Ok(aircraft);
+            return aircraft != null ? Ok(aircraft) : NotFound();
         }
 
 
