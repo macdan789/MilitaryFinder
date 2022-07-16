@@ -58,14 +58,9 @@ namespace MilitaryFinder.API.Services
 
         public async Task<List<FighterAircraftResponse>> GetAllAircraftsAsync()
         {
-            var response = new List<FighterAircraftResponse>();
-
             var aircrafts = await _dbContext.FighterAircraft.ToListAsync();
 
-            foreach (var aircraft in aircrafts)
-            {
-                response.Add(new FighterAircraftResponse { Id = aircraft.Id, Model = aircraft.Model });
-            }
+            var response = aircrafts.Select(x => new FighterAircraftResponse { Id = x.Id, Model = x.Model }).ToList();   
 
             return response;
         }
