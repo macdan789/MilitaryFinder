@@ -8,9 +8,9 @@ namespace MilitaryFinder.API.Registers
 {
     public class DbRegister : IRegister
     {
-        public void RegisterServices(IServiceCollection services, IConfiguration Configuration)
+        public void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<Data.DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<Data.DataContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

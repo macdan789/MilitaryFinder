@@ -6,6 +6,6 @@ namespace MilitaryFinder.API.Registers.Abstract
 {
     public interface IRegister
     {
-        void RegisterServices(IServiceCollection services, IConfiguration Configuration);
+        void RegisterServices(IServiceCollection services, IConfiguration configuration);
     }
 }

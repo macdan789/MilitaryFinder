@@ -92,7 +92,9 @@ namespace MilitaryFinder.API.Registers
                 config.AddSecurityRequirement(securityRequirments);
             });
 
-            services.AddScoped<IFighterAircraftService, FighterAircraftService>();
+            //services.AddScoped<IFighterAircraftService, FighterAircraftService>();
+            //It is recommended to use Singleton for CosmosDB
+            services.AddSingleton<IFighterAircraftService, FighterAircraftCosmosDBService>();
         }
     }
 }
