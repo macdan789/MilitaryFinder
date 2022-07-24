@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MilitaryFinder.API.Services
+namespace MilitaryFinder.API.Services.Abstract
 {
     public interface IFighterAircraftService
     {

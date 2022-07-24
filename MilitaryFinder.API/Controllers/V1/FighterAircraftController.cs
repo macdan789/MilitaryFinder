@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MilitaryFinder.API.Contracts.V1;
 using MilitaryFinder.API.Contracts.V1.Requests;
 using MilitaryFinder.API.Contracts.V1.Responses;
 using MilitaryFinder.API.Domain;
-using MilitaryFinder.API.Services;
+using MilitaryFinder.API.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace MilitaryFinder.API.Controllers.V1
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class FighterAircraftController : Controller
     {
         private readonly ILogger<FighterAircraftController> _logger;
@@ -53,6 +56,7 @@ namespace MilitaryFinder.API.Controllers.V1
 
             if (created)
             {
+                //Get location uri of new created object
                 var baseUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
                 var location = baseUri + "/" + ApiRoutes.FighterAircraft.Get.Replace("{aircraftId}", domainAircraft.Id.ToString());
 

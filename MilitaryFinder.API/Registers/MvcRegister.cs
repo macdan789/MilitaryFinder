@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MilitaryFinder.API.Registers.Abstract;
 using MilitaryFinder.API.Services;
+using MilitaryFinder.API.Services.Abstract;
 using MilitaryFinder.API.Settings;
 using System;
 using System.Text;
@@ -18,6 +19,9 @@ namespace MilitaryFinder.API.Registers
             var jwtSettings = new JwtSettings();
             configuration.Bind(nameof(jwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
+
+            //Why it should be scope?
+            services.AddScoped<IIdentityService, IdentityService>();
 
             //For fun
             var secret = configuration["JwtSettings:Secret"];
@@ -92,9 +96,10 @@ namespace MilitaryFinder.API.Registers
                 config.AddSecurityRequirement(securityRequirments);
             });
 
-            //services.AddScoped<IFighterAircraftService, FighterAircraftService>();
+            services.AddScoped<IFighterAircraftService, FighterAircraftService>();
+            
             //It is recommended to use Singleton for CosmosDB
-            services.AddSingleton<IFighterAircraftService, FighterAircraftCosmosDBService>();
+            //services.AddSingleton<IFighterAircraftService, FighterAircraftCosmosDBService>();
         }
     }
 }

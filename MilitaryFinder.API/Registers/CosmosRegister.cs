@@ -13,9 +13,6 @@ namespace MilitaryFinder.API.Registers
     {
         public void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
-            //For fun
-            var temp = configuration.GetValue(typeof(string), "AuthKey");
-
             var settings = new CosmosStoreSettings(configuration["CosmosDBSettings:DatabaseName"],
                 configuration["CosmosDBSettings:AccountUri"],
                 configuration["CosmosDBSettings:AuthKey"],

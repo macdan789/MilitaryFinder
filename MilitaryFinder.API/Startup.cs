@@ -40,13 +40,13 @@ namespace MilitaryFinder.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

@@ -3,6 +3,7 @@ using Cosmonaut.Extensions;
 using MilitaryFinder.API.Contracts.V1.Requests;
 using MilitaryFinder.API.Contracts.V1.Responses;
 using MilitaryFinder.API.Domain;
+using MilitaryFinder.API.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
