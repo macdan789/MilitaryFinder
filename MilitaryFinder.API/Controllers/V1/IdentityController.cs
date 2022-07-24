@@ -41,6 +41,15 @@ namespace MilitaryFinder.API.Controllers.V1
         [HttpPost(ApiRoutes.Identity.Login)]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new UserLoginResponse
+                {
+                    Token = string.Empty,
+                    ErrorMessages = ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage))
+                });
+            }
+
             var response = await _service.LoginAsync(request.EmailAddress, request.Password);
 
             if (!response.Success)
